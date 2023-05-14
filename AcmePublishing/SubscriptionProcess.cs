@@ -59,7 +59,7 @@ public class SubscriptionProcess {
 
         await _context.SaveChangesAsync();
 
-        static void RecordIssueSend(DateOnly date, Subscription? subscription, string issue, bool failed)
+        void RecordIssueSend(DateOnly date, Subscription subscription, string issue, bool failed)
         {
             subscription.IssuesSent.Add(new SubscriptionIssue(issue, date, failed, subscription.PublicationId));
         }
