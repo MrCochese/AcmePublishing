@@ -1,9 +1,0 @@
-namespace AcmePublishing.Data;
-
-public class PrintDistributor 
-{
-    public int Id { get; }
-    public string Name { get; }
-    public string CountryCode { get; }
-    public ICollection<Publication> Publications { get; }
-}
