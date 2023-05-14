@@ -1,0 +1,9 @@
+namespace AcmePublishing.Data;
+
+public class Customer 
+{
+    public int Id { get; }
+    public string FamilyName { get; }
+    public string GivenName { get; }
+    public ICollection<Subscription> Subscriptions { get; }
+}
