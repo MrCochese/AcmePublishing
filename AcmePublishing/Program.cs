@@ -20,4 +20,19 @@ using IHost host = Host.CreateDefaultBuilder(args)
 var context = host.Services.GetService<AcmeContext>();
 context.Database.EnsureCreated();
 
+var subscriptions = await context.Subscription.Where(x => x.Active).Include(x => x.Address).Include(x => x.Customer).Include(x => x.Publication).ThenInclude(x => x.Distributors).ToListAsync();
+
+foreach (var subscription in subscriptions)
+{
+    var distributor = subscription.Publication.Distributors.FirstOrDefault(x => x.CountryCode == subscription.Address.CountryCode);
+    if (distributor == null)
+    {
+        // log distributor for subscription not found
+        continue;
+    }
+
+    var distributionApi = DistributorApiFactory.Build(distributor);
+    await distributionApi.Publish(subscription.Customer, subscription.Address, subscription.Publication);
+}
+
 await host.RunAsync();
