@@ -5,18 +5,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AcmePublishing;
 
-// var configuration =  new ConfigurationBuilder()
-//      .AddJsonFile($"appsettings.json");
-            
-// var config = configuration.Build();
-// var connectionString = config.GetConnectionString("ConnectionString");
+var configuration =  new ConfigurationBuilder()
+     .AddEnvironmentVariables()
+     .AddUserSecrets("c7519472-b5c7-4869-b28a-358f57e65517")
+     .Build();
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         services.AddLogging();
         services.AddTransient<SubscriptionProcess>();
-        services.AddDbContext<AcmeContext>(x => x.UseSqlServer("Data Source=192.168.20.79,5434;Initial Catalog=Acme;User id=sa;Password=Pass@word;Persist Security Info=True;encrypt=False;"));
+        services.AddDbContext<AcmeContext>(x => x.UseSqlServer(configuration.GetConnectionString("SqlServer")));
     })
     .Build();
 
