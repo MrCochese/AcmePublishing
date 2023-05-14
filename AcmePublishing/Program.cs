@@ -15,11 +15,11 @@ using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         services.AddLogging();
-        services.AddTransient<PublishProcess>();
+        services.AddTransient<SubscriptionProcess>();
         services.AddDbContext<AcmeContext>(x => x.UseSqlServer("Data Source=192.168.20.79,5434;Initial Catalog=Acme;User id=sa;Password=Pass@word;Persist Security Info=True;encrypt=False;"));
     })
     .Build();
 
-await host.Services.GetService<PublishProcess>().Execute();
+await host.Services.GetService<SubscriptionProcess>().Execute();
 
 await host.RunAsync();

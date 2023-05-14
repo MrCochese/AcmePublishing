@@ -9,8 +9,3 @@ public class DistributorApiFactory
         return new FakeDistributionApi();
     }
 }
-
-public interface IDistributionApi
-{
-    Task Publish(Customer customer, Address address, Publication publication, int month);
-}
