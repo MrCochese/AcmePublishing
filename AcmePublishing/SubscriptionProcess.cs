@@ -31,6 +31,8 @@ public class SubscriptionProcess {
 
         foreach (var subscription in subscriptions)
         {
+            var issue = $"{date.Month:00}/{date.Year:0000}";
+
             var distributor = subscription.Publication.Distributors.FirstOrDefault(x => x.CountryCode == subscription.Address.CountryCode);
             if (distributor == null)
             {
@@ -42,7 +44,7 @@ public class SubscriptionProcess {
             var distributionApi = DistributorApiFactory.Build(distributor);
             bool failed = false;
             try {
-                await distributionApi.Publish(subscription.Customer, subscription.Address, subscription.Publication, date.ToString("mm/yyyy"));
+                await distributionApi.Publish(subscription.Customer, subscription.Address, subscription.Publication, issue);
             }
             catch (Exception ex)
             {
@@ -50,7 +52,8 @@ public class SubscriptionProcess {
                 failed = false;
             }
 
-            subscription.IssuesSent.Add(new SubscriptionIssue(date.ToString("mm/yyyy"), date, failed, subscription.PublicationId));
+            _logger.LogInformation("Issue {issue} sent to subscription {subscriptionId}", issue, subscription.Id);
+            subscription.IssuesSent.Add(new SubscriptionIssue(issue, date, failed, subscription.PublicationId));
         }
 
         await _context.SaveChangesAsync();

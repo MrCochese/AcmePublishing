@@ -8,7 +8,7 @@ Set ConnectionStrings:SqlServer as an environment variable or user secret.
 
 ## Assumptions and simplifications
 
-I'm assuming for the purposes of this exercise that each publication has one new issue every month, and that they all go out on the same day, and we will reference each as "mm/yyyy". Another simplification is the assumption that each Print-Distributor already has access to the issue file for printing, and is able to retrieve it via an API or CMS, otherwise we would have to load the publication files from storage here and post them to the Print-Distributors once per issue. I've also assumed that the Print-Distributor APIs may fail for transient or address validation reasons, and that the number of subscriptions and publications is not yet enormous (order of 10^3) and manageable in one go.
+I'm assuming for the purposes of this exercise that each publication has one new issue every month, that they all go out on the same day, and we will reference each as "mm/yyyy". Another simplification is the assumption that each Print-Distributor already has access to the issue file for printing, and is able to retrieve it via an API or CMS, otherwise we would have to load the publication files from storage here and post them to the Print-Distributors once per issue. I've also assumed that the Print-Distributor APIs may fail for transient or address validation reasons, and that the number of subscriptions and publications is not yet enormous (order of 10^3) and manageable in one go.
 
 ## Design
 
@@ -20,7 +20,7 @@ See AcmePublishing/schema.md and AcmePublishing/schema.svg
 
 ## Development Process
 
-I designed the entities code-first in EF Core and generated the database schema in a docker-hosted SQL Server using DataBase.EnsureCreated() for rapid development. Normally, I would use EF Core data migrations or another method to generate the schema rather than generating it from scratch on app execution.
+I designed the entities code-first in EF Core and generated the database schema in a docker-hosted SQL Server using DataBase.EnsureCreated() for rapid development. Normally, I would use EF Core data migrations or another method to generate the schema rather than generating it from scratch on app execution. Again, for speed, testing was done by executing the process against local test data.
 
 ## Improvements
 
