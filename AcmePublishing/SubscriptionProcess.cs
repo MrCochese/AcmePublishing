@@ -37,13 +37,14 @@ public class SubscriptionProcess {
             if (distributor == null)
             {
                 _logger.LogError("Distributor not found for subscription {subscriptionId} and country {countryCode}", subscription.Id, subscription.Address.CountryCode);
-                subscription.IssuesSent.Add(new SubscriptionIssue(date.ToString("mm/yyyy"), date, true, subscription.PublicationId));
+                RecordIssueSend(date, subscription, issue, true);
                 continue;
             }
 
             var distributionApi = DistributorApiFactory.Build(distributor);
             bool failed = false;
-            try {
+            try
+            {
                 await distributionApi.Publish(subscription.Customer, subscription.Address, subscription.Publication, issue);
             }
             catch (Exception ex)
@@ -53,9 +54,14 @@ public class SubscriptionProcess {
             }
 
             _logger.LogInformation("Issue {issue} sent to subscription {subscriptionId}", issue, subscription.Id);
-            subscription.IssuesSent.Add(new SubscriptionIssue(issue, date, failed, subscription.PublicationId));
+            RecordIssueSend(date, subscription, issue, failed);
         }
 
         await _context.SaveChangesAsync();
+
+        static void RecordIssueSend(DateOnly date, Subscription? subscription, string issue, bool failed)
+        {
+            subscription.IssuesSent.Add(new SubscriptionIssue(issue, date, failed, subscription.PublicationId));
+        }
     }
 }
