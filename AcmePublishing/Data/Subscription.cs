@@ -10,4 +10,5 @@ public class Subscription
     public int CustomerId { get; set;}
     public Customer Customer { get; set;}
     public bool Active { get; set; }
+    public ICollection<SubscriptionIssue> IssuesSent { get; set; }
 }
