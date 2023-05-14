@@ -16,6 +16,10 @@ public class AcmeContext : DbContext
         modelBuilder.UseIdentityColumns();
         modelBuilder.Entity<Subscription>()
             .HasKey(x => x.Id);
+
+        modelBuilder.Entity<PrintDistributor>()
+            .HasMany<Publication>(x => x.Publications)
+            .WithMany(x => x.Distributors);
     }
 
 }
